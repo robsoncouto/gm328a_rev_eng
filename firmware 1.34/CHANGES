@@ -1,0 +1,400 @@
+------------------------------------------------------------------------------
+
+                  Change Log for the Component Tester firmware
+
+         for ATmega 328/324/644/1284 with character or graphic display
+
+                        (c) 2012-2018 by Markus Reschke
+
+------------------------------------------------------------------------------
+
+v1.34m 2018-10
+- Added leakage check for capacitors.
+- Changed default value for RH_OFFSET to 350 Ohms. 
+- Fixed missing menu entry for fixed IR receiver module.
+- Polish texts (thanks to Szpila).
+- Display driver for output via VT100 serial terminal.
+- Support for temperature sensor DS18B20.
+- Driver for OneWire bus.
+
+v1.33m 2018-05
+- Fixed orientation of TRIAC symbol in symbols_32x32_hf.h.
+- Added remote commands for automation (via TTL serial).
+- The x & y offsets for the ST7735 driver can be changed now.
+- Entering the menu by a short circuit of the probes is an option now 
+  (UI_SHORT_CIRCUIT_MENU).
+- Fixed problem with discharge relay when using rotary encoder.
+- Added configuration switch to disable MCU sleep modes.
+- Added RX support to TTL serial driver (bit-bang & hardware USART).
+- Fixed error in serial text output and added serial output for results of
+  the optocoupler check.
+- Danish texts (provided by glenndk@mikrocontroller.net) 
+- Settings for capacitor correction factors.
+
+v1.32m 2018-02
+- Additional output of components found to TTL serial interface.
+- Driver for TTL serial interface (hardware and bit-bang).
+- Updated var_russian.h (thanks to indman@EEVblog).
+- Added support for X&Y offsets to ST7735 driver.
+- Changed configuration of battery monitoring. Added switches to disable
+  battery monitoring and to support an unmonitored external power supply.
+- Added configuration switch to reverse operation mode selection at startup
+  (UI_AUTOHOLD).
+- Improved filter for Germanium BJTs with high leakage current in detection 
+  function for depletion mode FETs.
+- Added fancy pinout to PCD8544 driver. Also fixed error in the PCD8544
+  driver's function LCD_CharPos() for rotated output.
+- Improved functions for fancy pinout of 3-pin semiconductors and moved some
+  functions to display.c. Output of pinout on separate screen if required.
+- Added indicator for usage of external voltage reference (Show Values).
+- Improved IR decoder and added optional protocols.
+- Added more protocols to IR RC transmitter.
+
+v1.31m 2017-12
+- New tool: IR RC transmitter.
+- Added support for dedicated signal output via OC1B, when OC1B isn't used
+  for test pin #2's probe resistor.
+- Changed battery monitoring settings to support also other power options.
+- Driver for SSD1306 based graphic OLED modules.
+- Color support for item selection (menues and tools).
+- Driver for ILI9163 based graphic color LCD modules.
+- Fixed tiny issue in squarewave signal generator.
+- Added support for 180° rotated output to PCD8544 LCD driver.
+- Fixed edit error in Servo_Check().
+
+v1.30m 2017-10
+- Option to use comma instead of dot to indicate a decimal fraction.
+- Support for extended frequency counter (buffered frequency input, LF
+  crystal, and HF crystal).
+- Minor improvements for basic frequency counter.
+- Fixed gate time issue in frequency counter for frequencies below 10kHz when
+  the MCU runs at 20MHz. 
+- Modified ESR measurement to support a shorter charging pulse, i.e. ESR can
+  be measured for caps starting at 10nF. If you prefer the old method, you can
+  enable that one alternatively.
+- Fixed bug in the probes' short circuit detection.
+- Added supported for 180° rotated output to ST7920 LCD driver.
+
+v1.29m 2017-07
+- Added touch screen support and driver for ADS7843 compatible touch
+  controllers.
+- Fixed bug in contrast setting for PCD8544.
+- Fixed silly error in CheckSum().
+- Driver for ST7920 based LCD modules with 64x128 pixels.
+- Optimized SmallResistor() and changed detecton logic in CheckResistor()
+  to cope better with low value resistances and possible probe contact
+  issues.
+- Changed control logic and treshold for Darlington BJTs in Get_hFE_C() to
+  fix issue with some NPN types.
+- Global driver for SPI bus. Modified display drivers and configuration
+  accordingly.
+- Italian text provided by Gino_09@EEVblog.
+- Support for HD44780 with Cyrillic font by hapless@EEVblog.
+
+v1.28m 2017-04
+- Increase/Decrease push buttons as alternative for a rotary encoder (
+  HW_INCDEC_KEYS).
+- Added reset to default frequency to squarewave generator.
+- Further improvements of the detection of the rotary encoder's turning
+  velocity (ENCODER_STEPS). Also changes to functions making use of the
+  turning velocity.
+- Added reset to default values to alternative PWM generator.
+- Russian text provided by indman@EEVblog (only 8x16 font, horizontally
+  aligned)
+- Added support for fixed cap for self adjustment of voltage offsets.
+- Fixed potential bug in the V_ref offset handling in SmallCap().
+- Added configuration switch for ST7735 based displays to start with a
+  cleared display (no random pixels).
+
+v1.27m 2017-02
+- Added high current meassurement to GetLeakageCurrent() for CLDs.
+  Thanks to texaspyro@EEVblog for sending a few sample diodes.
+- Fixed bug in MilliSleep().
+- Fixed issue with large inductance in diode detection.
+- Compensation for inductance measurement in the mH range.
+- Support for PCF8574 based LCD backpacks in HD44780 driver.
+- Driver for bit-bang and hardware I2C.
+- Fixed bug in the handling of the variable pin assignment for HD44780
+  based displays.
+- Color support for probe pinout of several tools. 
+- Check function for RC servos.
+- Alternative PWM generator with variable frequency and ratio. Requires
+  rotary encoder and large display.
+- Output of R_DS for MOSFETs and Vf for their body diode.
+- Support for fixed IR receiver module in IR RC detector/decoder.
+- Dropped edition in name, because the Classic edition is obsolete by now.
+
+v1.26m 2016-12
+- Added compensation for inductance measurement (more work required).
+- Added Spanish texts. Translation provided by pepe10000@EEVblog.
+- Changed FrequencyCounter() to support also ATmega 324/644/1284. 
+- Fixed problem in inductance measurement logic. Reported by indman@EEVblog.
+- Fixed error in voltage reference handling for ATmega 324/644/1284.
+- Improved detection of turning velocity of rotary encoder to cope with
+  different values of pulses per step or detent.
+- Added hardware SPI to all drivers for SPI based displays.
+
+v1.25m 2016-09
+- A lot of changes to support the ATmega 324/644/1284.
+- Modified test resistor management to support variable port pins.
+- Added software option for probe color coding. 
+- Centralized color management.
+- Added file listing settings for various tester versions/clones.
+- Fixed small issue with 24x24 VP symbol bitmap in config.h. Reported by
+  lordstein@EEVblog and hapless@EEVblog.
+
+v1.24m 2016-08
+- Measurement of self-discharge leakage current for caps > 4.7µF.
+- Added type detection logic for BJTs with diode on the same substrate.
+- Improved leakage current measurement to support currents in the nA range.
+  The leakage will be shown for diodes and BJTs, when it's larger than 50nA.
+- Improved the display of instrinsic/flyback diodes for transistors to check
+  for the proper diode (pins and polarity). 
+- Fixed an error in the display of a BJT's flyback diode.
+- Added a function for searching a specific diode and adapted several
+  functions to use the new diode search instead of the old local search.
+- Improved detection of diodes to support also Germanium types with very low
+  Vf at low currents.
+- Fixed problem with LCD_ClearLine(0) for ILI9341 and ST7735.
+- Improved detection of depletion mode FETs to exclude Germanium BJTs with
+  high leakage current. Added detection of FETs with low I_DSS. Added
+  measurement of I_DSS. 
+
+v1.23m 2016-07
+- Added support for PCD8544 and ST7735 based LCD modules. Thanks to
+  hansibull@EEVblog for sponsering a PCD8544 display.
+- Extended wait.S for 20MHz MCU clock.
+- Changed MeasureESR() to support also non 125KHz ADC clocks.
+- Added detection of PUTs (Programmable Unijunction Transistor) and
+  UJTs (Unijunction Transistor). Thanks to edavid@EEVblog for sending
+  some UJTs for testing.
+- Minor code optimization for ILI9341 and ST7565R.
+- Fixed multi-page font problem for ST7565R, again.
+- /RES port pin assigned for ILI9341 was ignored. Fixed that and also
+  wrong delays for hardware reset. 
+- Support of individual data lines for HD44780 based LCD displays. 
+- Support user-defined resistor divider for battery voltage.
+- Added output of If for opto couplers.
+- Changed probe pins of ESR tool to 1-3 to be compatible with k-firmware.
+- Moved MCU specific global settings to dedicated header files. Several minor
+  changes to add support for ATmega664/1284.
+- Updated Czech texts, thanks to Kapa.
+
+v1.22m 2016-03
+- Added opto coupler check with display of the LED's V_f, the CTR and t_on/
+  t_off delays (BJT types). Thanks to all_repair@EEVblog for some samples.
+
+v1.21m 2016-01
+- Licensed under the EUPL V.1.1
+- Improved storage managment of adjustment values and added support for
+  two adjustment profiles.
+- Added detection and decoding of RC-6 to IR detector. Solved issue with
+  test button when the IR receiver module is removed too early. Added
+  configuration switch to disable current limiting resistor for Vs in case
+  of a 5V only IR receiver module.
+
+v1.20m 2015-12
+- Added IR RC detector and decoder function (requires TSOP IR receiver
+  module).
+- Changed MainMenu() to reduce RAM usage.
+
+v1.19m 2015-11
+- Implemented a fancy pinout displaying symbols and probe numbers for 3 pin
+  semiconductors. 
+- Added color support.
+- Changed ShowDiode() to output the number of diodes directy (not via 
+  Show_Fail() anymore) when more than 3 diodes are found (hint by
+  hapless@EEVblog).
+- Extended LCD_ClearLine() in all display drivers to clear the remaining
+  space of the current line to speed up things, especially for graphic
+  displays The idea is to display the text first and then to clear the
+  remaining space, instead of clearing the complete line and then printing the
+  text.
+- Added display driver for ILI9341/ILI9342 based modules. Thanks to
+  Overtuner@EEVblog forum for providing two LCD modules.
+- Fixed problem with µ/micro character in font files.
+- Fixed character issue (when larger than 8x8) in LCD_Char() for ST7565R.
+- Updated Czech texts, thanks to Kapa.
+- Fixed a minor issue in MenuTool(), when rolling over from last to first
+  item.
+
+v1.18m 2015-07
+- Improved MenuTool() to update items only when the list has changed.
+  Otherwise just the selection indicator is updated.
+- Fixed variable management bug in config.h.
+- Added feature to reset to firmware defaults when powering on. 
+- Optimized functions for NVRAM management (values stored in EEPROM).
+- Added driver functions for ST7565R grafic modules.
+- Designed a simple framework which allows to add different display modules or
+  controllers. Moved high level display functions to display.c. Each controller
+  got a dedicated source and header file including controller specific
+  functions. Adapted old HD44780 to new framework.
+- Changed UI to handle multiline displays in a flexible way.
+- Removed everything specific to ATmega168 (too small ;).
+- Optimized feedback processing in MenuTool().
+- Forked a new firmware edition, which also supports graphic displays, named
+  "Trendy Edition". The old firmware is called "Classic Edition" now.
+
+v1.17m 2015-02
+- Improved CheckDiode() to support measured Vcc in resistor check and fixed
+  detection issue for resistors around 2k if the optional DC/DC boost
+  converter is installed (HW_ZENER).
+- Fixed some incorrect comments.
+- Cleaned up integer data types.
+
+v1.16m 2014-09
+- Added test for rotary encoders.
+- Fixed some minor issues in MeasureInductance() to increase accuracy.
+- Changed ShowAdjust() to display absolute value of Vcc and the internal
+  bandgap reference (suggestion from Vlastimil Valouch).
+- Some minor improvements.
+
+v1.15m 2014-09
+- Improved TestKey() to detect the dynamic turning velocity of a optional
+  rotary encoder.
+- Added a squarewave signal generator with variable frequency.
+- Changed MeasureInductance() to return time in ns and adapted processing
+  in MeasureInductor() (thanks to Vlastimil Valouch).
+
+v1.14m 2014-08
+- Changed user interface for rotary encoder.
+- Fixed compiler warning about R_Pin2 in ShowDiode() (thanks to Milan Petko).
+- Resistors between 1.5k and 3k Ohms were detected as double diodes. Changed
+  tolerance of resistor test in CheckDiode() (thanks to nessatse).
+- Modified ShortCircuit() to allow user to abort creating a short circuit in
+  case of any problem.
+- Added frequency counter (hardware option).
+
+v1.13m 2014-07
+- Added Czech texts, thanks to Kapa.
+- ESR and PWM tools display the probes pins used.
+- Improved handling of pre-compiler directives for extra features.
+- Added support for rotary encoders for the user interface.
+
+v1.12m 2014-03
+- Fixed umlaut problem for German UI (thanks to Andreas Hoebel).
+- Added ESR measurement for capacitors >0.18µF.
+- Optimized display output handling to save some bytes Flash. 
+
+v1.11m 2014-03
+- Improved pinout detection for Triacs (G and MT1) and changed display
+  to report MT1 and MT2.
+- Added pinout display function for semiconductors and changed output to
+  "123=" style for better readabilty.
+- Optimized several component output functions.
+- Improved the BJT check to detect transistors with a built-in freewheeling
+  diode on the same substrate (creating a parasitic BJT). The BJT output
+  prints a '+' behind the BJT type for such transistors.
+- Modified diode display to support possible BJTs with protection diode and
+  low value B-E resistor. Those are detected as dual diodes. The B-E resistor
+  will be shown to signal that special case.
+- Modified BJT display to support base-emitter resistors. If a B-E resistor is
+  found hFE and V_BE will be skipped since both values can't be measured in a
+  reasonable way in that case. 
+- Improved diode test to detect body diodes of dep-mode FETs.
+- Fixed detection problem of drain and source for depletion-mode FETs.
+- Added detection of symmetrical drain and source for depletion-mode FETs.
+- Vth is negative for p-channel FETs now.  
+- Added measurement of V_GT for SCRs and Triacs.
+- Due to flash size constraints the PWM tool is now available for the 
+  ATmega328 only.
+
+v1.10m 2013-10
+- Added support for external 2.5V voltage reference (hardware option).
+- Added support for relay based cap discharging (hardware option).
+- Changed good-bye message into welcome message to help to detect problems
+  with the brown-out voltage of the MCU and to mitigate a voltage drop
+  caused by an optional DC boost converter at startup.
+- Added Zener tool (hardware option).
+- The main menu got an exit function in case the menu was entered by mistake.
+- Support of 16MHz MCU clock.
+
+v1.09m 2013-07
+- Added IGBT detection.
+- Added a sanity check for MOSFETs.
+- The hFE measurement for BJTs considers the leakage current in common emitter
+  configuration.
+- For MOSFETs the direction of the intrinsic diode is shown.
+- Fixed problem with swapped drain and source pins for enhancement mode
+  MOSFETs.
+- Added workaround for Makefile problems with some IDEs. Some important Values
+  can be defined in config.h too.
+
+v1.08m 2013-07
+- Since the SmallResistor() measurement can't give correct DC resistance
+  values for some inductors a problem detection was added to CheckResistor()
+  to keep the original high resistance measurement result.
+- Added inductance measurement (ATmega328/P only)
+- Minor improvements for the display of diodes and BJTs.
+- Added leakage current measurement.
+- Fixed problem with germanium BJTs with a high leakage current. They were
+  detected as p-channel JFETs.
+- Renamed some functions, clarified and added some remarks.
+
+v1.07m 2013-06
+- Optimized diode display function and added display of low current Vf.
+- Improved the diode detection. Caps and resistors are excluded much better.
+  Also the cap probing is skipped for diodes to speed up probing.  
+- Fixed an array overflow bug in CheckResistor().
+- Improved cursor display logic to tell user if another information follows
+  or the probing loop is reentered.
+- Improved UI of PWM tool to prevent exit by mistake (double key press
+  required now).
+- Added a generic menu function and adapted all menus (changed layout!).
+- TestKey() provides a nice blinking cursor now.
+
+v1.06m 2013-03
+- Several minor improvements and cleanups.
+- Expanded TestKey() to inform the user about an expected key press.  
+- Improved TestKey() function to be more responsive for short key presses.
+- Added a PWM tool to generate a PWM signal with different frequencies and
+  duty ratios.
+- Implemented a sleep function to reduce power usage of the tester.
+  On average the power usage is nearly halfed (excluding the LCD backlight).
+- Improved discharge function. If the discharge of a component fails, the
+  concerned probe pin and the remaining voltage are displayed. That will help
+  to detect a too low value for CAP_DISCHARGED.
+- Added the capability to set error types
+
+v1.05m 2012-11
+- Moved LargeCap_table[] and SmallCap_table[] from EEPROM to flash to reduce
+  EEPROM usage. The size for a German firmware exceeded the 512 bytes of an
+  ATmega168s EEPROM.
+
+v1.04m 2012-11
+- Added a simple logic to the output function for diodes to prevent the
+  measurement of capacitance for antiparallel diodes. 
+
+v1.03m 2012-11
+- Fixed detection problem of power diodes with high leakage current (mistaken
+  for resistors).
+- Fixed compiler warnings about possible uninitialized variables. That
+  increased the firmware size by about 44 bytes :-(
+
+v1.02m 2012-11
+- Added upper limit for resistance of probe leads in the self adjustment
+  function (1.00 Ohms).
+- Selftest and adjustment functions perform a short circuit test before
+  running the main part and return feedback now.
+- The mainmenu gives feedback about success/failure of the selected action.
+
+v1.01m 2012-10
+- Added a checksum for adjustment values stored in the EEPROM and wrote a
+  function to validate the checksum.
+- Added a measurement function for small resistors (resolution: 0.01 Ohms).
+- Extended self adjustment to support an auto-zero for the resistance of the
+  probe leads.
+- CheckResistor() runs an extra measurement for small resistors (<10 Ohms).
+- Added a function to compare two scaled values. 
+- Adapted several functions to support variable scaling of values.
+
+v1.00m 2012-09
+- Added a simple menu for selection of self test, self adjustment, update of
+  the adjustment values in the EEPROM and display of values.
+- Changed hfe from 16 bit to 32 bit value (no 65k limit anymore).
+
+v0.99m 2012-09
+- Initial public release based on Karl-Heinz' version 0.99k.
+
+
+------------------------------------ EOF -------------------------------------

@@ -1,0 +1,422 @@
+------------------------------------------------------------------------------
+
+                   Änderungen der Component Tester Firmware
+
+           für ATmega 328/324/644/1284 mit Text- oder Grafikdisplay
+
+                        (c) 2012-2018 by Markus Reschke
+
+------------------------------------------------------------------------------
+
+v1.34m 2018-10
+- Leckstromtest für Kondensatoren.
+- Standardwert für RH_OFFSET auf 350 Ohm geändert.
+- Problem mit fehlendem Menüeintrag für festes IR-Empfängermodul beseitigt.
+- Polnischer Text (Dank an Szpila).
+- Displaytreiber für Ausgabe auf VT100-Terminal.
+- Unterstützung von Temperatursensor DS18B20.
+- Treiber für OneWire-Bus.
+
+v1.33m 2018-05
+- Orientierung von TRIAC-Symbol in symbols_32x32_hf.h korrigiert.
+- Fernsteuerkommandos zur Automatisierung (über die serielle
+  TTL-Schnittstelle).
+- Der X & Y-Offset für den ST7735-Treiber kann nun verändert werden.
+- Aufrufen des Menüs per Kurzschluß der Testpins ist nun eine Option (
+  UI_SHORT_CIRCUIT_MENU).
+- Problem mit Entlade-Relais in Verbindung mit Drehencoder beseitigt.
+- Konfigurationschalter zum Ausschalten der MCU-Schlafmodi ergänzt.
+- Datenempfang für serielle TTL-Schnittstelle (Bit-Bang & Hardware USART).
+- Fehler in serieller Textausgabe beseitigt, und serielle Ausgabe für
+  Resultate des Opto-Koppler-Tests eingebaut.
+- Dänischer Text (von glenndk@mikrocontroller.net).
+- Einstellungen für Korrekturfaktoren für Kondensatoren.
+
+v1.32m 2018-02
+- Ausgabe von gefundenen Bauteilen zusätzlich über serielle Schnittstelle.
+- Treiber für serielle TTL-Schnittstelle (Hardware & Bit-Bang).
+- Aktualisierung von var_russian.h (Dank an indman@EEVblog).
+- Unterstützung von X&Y-Offsets im ST7735-Treiber. 
+- Einstellungen der Batterieüberwachung geändert. Schalter zum Abschalten
+  der Batterieüberwachung und für nicht überwachte externe Stromversorgung
+  ergänzt.
+- Konfigurationsschalter zur Auswahl des alternativen Betriebsmodus beim
+  Starten (UI_AUTOHOLD) 
+- Filter für Germanium-Transistoren mit hohem Leckstrom in der Funktion zur
+  Erkennung von Verarmungstyp-FETs verbessert.
+- Graphisches Pinout im Treiber für PCD8544 ergänzt. Fehler in der Funktion
+  LCD_CharPos() für rotierte Ausgabe im PCD8544-Treiber beseitigt.
+- Funktionen für graphisches Pinout verbessert und teilweise nach display.c
+  verschoben. Separate Ausgabe vom Pinout falls notwendig. 
+- Indikator bei Nutzung einer externen Spannungsreferenz (Werte Anzeigen).
+- IR-Decoder verbessert und optionale Protokolle eingebaut.
+- Zusätzliche Protokolle für IR-Fernbedienung.
+
+v1.31m 2017-12
+- IR-Fernbedienung (Sender).
+- Unterstützung für feste Signalausgabe über OC1B, wenn OC1B nicht für
+  den Testwiderstand von Testpin #2 benutzt wird. 
+- Einstellungen für Batterie-Überwachung geändert, um auch andere Optionen
+  zur Stromversorgung zu unterstützen. 
+- Treiber für SSD1306 basierte OLED-Module.
+- Farbunterstützung für Auswahl von Menüpunkten oder Parametern.
+- Treiber für ILI9163 basierte LCD-Module.
+- Problemchen in Rechteckgenerator beseitigt.
+- LCD-Treiber für PCD8544 um 180° rotierte Ausgabe erweitert.
+- Editierfehler in Servo_Check() berichtigt.
+
+v1.30m 2017-10
+- Option für Komma statt Punkt für Dezimalstellen.
+- Unterstützung für den erweiterten Frequenzzähler mit Eingangspuffer, LF und
+  HF-Quarzoszillator.
+- Kleinere Verbesserungen beim einfachen Frequenzzähler.
+- Problem mit Torzeit in Frequenzzähler für Frequenzen unter 10kHz bei MCU-Takt
+  von 20MHz beseitigt. 
+- ESR-Messung für kürzere Lade-Pulse modifiziert, d.h. der ESR kann nun für
+  Kondesatoren ab 10nF gemesssen werden. Wer die alte Messmethode bevorzugt,
+  kann diese alternativ aktivieren. 
+- Fehler in der Kurzschlußerkennung der Testpins beseitigt.
+- LCD-Treiber für ST7920 um 180° rotierte Ausgabe erweitert.
+
+v1.29m 2017-07
+- Unterstützung von Touch-Screens und Treiber für ADS7843 kompatible
+  Controller.
+- Fehler in Kontrast-Einstellung für PCD8544 korrigiert.
+- Dummen Fehler in CheckSum() beseitigt.
+- Treiber für ST7920 basierte LCD-Module mit 64x128 Pixel.
+- SmallResistor() optimiert und Erkennungslogik in CheckResistor() verbessert,
+  damit sehr kleine Widerstände in Verbindung mit Kontaktwiderständen der
+  Prüfkabel besser erkannt werden.
+- Steuerlogik und Schwellwert für Darlingston-Transistoren in Get_hFE_C()
+  geändert, um Problem mit manchen NPN-Typen zu beseitigen.
+- Zentraler SPI-Treiber. Treiber und Konfiguation von LCD-Modulen entsprechend
+  angepasst.
+- Italienischer Text von Gino_09@EEVblog.
+- Unterstützung von HD44780 mit kyrillischem Zeichensatz durch
+  hapless@EEVblog.
+
+v1.28m 2017-04
+- Mehr/Weniger-Tasten als Alternative zum Drehencoder (HW_INCDEC_KEYS).
+- Zurücksetzen auf Standardfrequenz im Rechteck-Generator ergänzt.
+- Weitere Verbesserungen der Erkennung der Drehschwindigkeit von Dreh-
+  encodern (ENCODER_STEPS). Änderungen in den Funktionen, welche die Dreh-
+  geschwindigkeit nutzen. 
+- Zurücksetzen auf Standardwerte im alternativen PWM-Generator ergänzt.
+- Russischer Text von indman@EEVblog (nur 8x16 Zeichensatz horizontal
+  ausgerichtet)
+- Unterstützung von festem Folienkondensator für den Selbstabgleich von
+  Spannugsoffsets.
+- Potentiellen Fehler in der Handhabung vom V_ref Offset in SmallCap()
+  beseitigt.
+- Konfigurationsoption für LCD-Module mit ST7735, um mit gelöschter Anzeige
+  zu starten (keine zufälligen Punkte).
+
+v1.27m 2017-02
+- GetLeakageCurrent() um Hochstrommessung für CLDs erweitert. Dank an
+  texaspyro@EEVblog für ein paar Testdioden.
+- Fehler in MilliSleep() beseitigt.
+- Problem mit großer Induktivität in Diodenerkennung beseitigt.
+- Kompensation für Induktivitätsmessung im mH-Bereich.
+- Unterstützung für PCF8574 basierte LCD-Adapter in Treiber für HD44780.
+- Treiber für bit-bang und Hardware I2C.
+- Fehler in der Handhabung der variablen Pinbelegung für HD44780 basierte
+  LCD-Module beseitigt.
+- Farbiges Pinout für mehrere Menüfunktionen.
+- Prüffunktion für Modellbau-Servos.
+- Alternativer PWM-Generator mit variabler Frequenz und Pulsweite. Benötigt
+  Drehencoder und größeres Display. 
+- Ausgabe von R_DS für MOSFETs und Vf der intrinsischen Diode.
+- Unterstützung für festes IR-Empfängermodul in IR-Detektor/Dekoder.
+- Edition im Namen entfernt, da die Classic Edition inzwischen veraltet ist.
+
+v1.26m 2016-12
+- Kompensation für Induktivitätsmessung eingebaut (benötigt weitere Arbeit).
+- Anpassung von FrequencyCounter() zur Unterstützung von ATmega 324/644/1284.
+- Problem in der Logik der Induktivitätsmessung beseitigt. Hinweis von
+  indman@EEVblog.
+- Fehler in der Handhabung der Spannungsreferenzen für ATmega 324/644/1284
+  gelöst. 
+- Erkennung der Drehgeschwindigkeit von Drehencodern verbessert, um 
+  unterschiedliche Werte für Pulse/Schritt bzw. Pulse/Rastung besser zu
+  handhaben. 
+- Alle Treiber für SPI-basierte LCD-Module um Hardware SPI erweitert.
+
+
+v1.25m 2016-09
+- Jede Menge Änderungen zur Unterstützung von ATmega 324/644/1284.
+- Manangement der Test-Widerstände auf variable Port-Pins umgestellt.
+- Software-Option für Farbkodierung der Testpins.
+- Farbmanagement zentralisiert.
+- Datei mit Auflistung der Einstellungen für verschiedene Testerversionen 
+  bzw. Clone.
+- Kleines Problem mit den 24x24-VP Symbolen in config.h beseitigt. Hinweis von
+  lordstein@EEVblog und hapless@EEVblog.
+
+v1.24m 2016-08
+- Messung vom Selbstentladungsleckstrom von Kondensatoren größer 4,7µF.
+- Typenerkennung von Bipolar-Transistoren mit Diode auf dem gleichen Substrat.
+- Messung von Leckstrom für Ströme bis in den nA-Bereich erweitert. Für Dioden
+  und Bipolar-Transistoren werden Leckströme über 50nA angezeigt. 
+- Die Anzeige von Freilaufdioden bei Transistoren prüft nun auf eine korrekte
+  Diode (Pins und Polarität).
+- Fehler in der Anzeige von Freilaufdioden bei Bipolar-Transistoren beseitigt.
+- Funktion zum Suchen einer bestimmten Diode geschrieben und mehrere andere
+  Funktionen entsprechend angepaßt.
+- Erkennung von Dioden verbessert, um auch Germanium-Dioden mit sehr
+  niedrigem Vf bei kleinen Strömen zu finden.
+- Problem mit LCD_ClearLine(0) für ILI9341 und ST7735 gelöst.
+- Verbesserung der Erkennung von Verarmungs-FETs. Germanium-Transistoren mit
+  hohem Leckstrom werden ausgefiltert. Auch werden nun FETs mit niedrigem
+  I_DSS erkannt. Messung von I_DSS.
+
+v1.23m 2016-07
+- Unterstützung von PCD8544 und ST7735 kompatiblen LCD-Modulen. Dank an
+  hansibull@EEVblog für ein PCD8544-Display.
+- wait.s für 20MHz MCU-Takt ergänzt.
+- MeasureESR() unstützt nun auch andere ADC-Taktraten als 125kHz.
+- Erkennung von PUTs (Programmable Unijunction Transistor) und
+  UJTs (Unijunction Transistor) eingebaut. Dank an edavid@EEVblog für
+  das Zusenden von ein paar UJTs zum Testen.
+- Kleinere Optimierungen für ILI9341 and ST7565R. 
+- Erneut Problem mit Zeichen größer 8x8 für den ST7565R beseitigt.
+- Der /RES Port-Pin für ILI9341 wurde ignoriert. Fehler beseitigt und
+  auch eine falsche Verzögerung für Hardwareresets korrigiert. 
+- Unterstützung von individuellen Datenleitungen für HD44780 basierte
+  LCD-Module.
+- Benutzerdefinierbarer Spannungsteiler für Batteriespannung.
+- Ausgabe von If für Opto-Koppler ergänzt.
+- Testpins vom ESR-Tool auf 1-3 geändert, um mit der k-firmware kompatibel
+  zu sein.
+- MCU-spezifische globale Einstellungen wurden in jeweils eigene Header-
+  Dateien verschoben. Mehrere kleine Anpassungen, um auch ATmega664/1284
+  zu unterstützen.
+- Tschechische Texte aktualisiert. Dank an Kapa.
+
+v1.22m 2016-03
+- Test für Opto-Koppler mit Ausgabe von V_f der LED, CTR und t_on bzw. t_off
+  Zeiten (Typen mit Transistorausgang). Dank an all_repair@EEVblog für
+  Opto-Koppler zum Testen.
+
+v1.21m 2016-01
+- Lizenziert unter der EUPL V.1.1
+- Laden und Speichern von Abgleichwerten optimiert und Unterstützung von
+  zwei Abgleichprofilen eingebaut.
+- IR-Detektor um RC-6 erweitert. Tasten-Problem bei vorzeitigem Entfernen des
+  IR-Empfängermoduls beseitigt. Konfigurationschalter zum Abschalten des
+  Vs-Widerstands zur Strombregrenzung für 5V IR-Empfängermodule.
+
+v1.20m 2015-12
+- Funktion zum Erkennen und Decodieren von IR-Fernsteuerungen implementiert.
+  Benötigt ein TSOP IR-Empfängermodul.
+- MainMenu() geändert, um RAM-Nutzung zu verkleinern.
+
+v1.19m 2015-11
+- Grafisches Pinout für 3-Pin Halbleiter. Zeigt Symbol plus Testpins.
+- Farbunterstützung eingebaut.
+- Direkte Ausgabe der Diodenanzahl in ShowDiode(), wenn mehr als 3 Dioden
+  gefunden wurden (nicht länger per Show_Fail()). Hinweis von hapless@EEVblog
+- LCD_ClearLine() in allen LCD-Modul-Treibern so erweitert, daß auch nur der
+  Zeilenrest gelöscht werden kann, um das Löschen speziell für Grafik-LCDs zu
+  beschleunigen. Die Idee ist, zuerst den Text auszugeben und dann den
+  Zeilenrest zu löschen, anstatt zuerst die ganze Zeile zu löschen und dann
+  den Text auszugeben.
+- Treiber für ILI9341/ILI9342 basierte LCD-Module geschrieben. Dank an
+  Overtuner@EEVblog-Forum für zwei LCD-Module zum Testen.
+- Problem mit dem µ/micro Zeichen in den Zeichensatzdateien gelöst.
+- Fehler bei Zeichen größer 8x8 in LCD_Char() für den ST7565R beseitigt. 
+- Tschechische Texte aktualisiert (Dank an Kapa).
+- Kleinen Fehler in MenuTool() beim Sprung vom letzten zum ersten Punkt
+  beseitigt.
+
+v1.18m 2015-07
+- MenuTool() so verbessert, daß nur eine geänderte Liste aktualsiert wird.
+  Ansonsten wird nur der Auswahlindikator aktualsiert.
+- Fehler im Variablenmanagement in config.h beseitigt.
+- Möglichkeit zum Zurücksetzen auf Firmware-Standardwerte beim Einschalten.
+- Funktionen zum Speichern/Lesen der Abgleichwerte optimiert. 
+- Treiber für ST7565R Grafikmodule.
+- Einfache Umgebung zum Einbinden von weiteren LCD-Controllern entworfen.
+  Generische Displayfunktionen nach display.c verschoben. Jeder Controller
+  erhält eine eigene Source- und Headerdatei. Der alte Treiber für HD44780
+  wurde an die neue Umgebung angepaßt.
+- Benutzerschnittstelle für den flexiblen Umgang mit mehrzeiligen LCD-Modulen
+  umgebaut.
+- Sourceabhängigkeiten zu ATmega168 entfernt (zu klein ;).
+- Bedienungslogik in MenuTool() optimiert.
+- Neue Firmware-Edition gestartet, welche auch grafische LCD-Module
+  unterstützt. Diese Version heißt "Trendy Edition". Die alte Firmwareversion
+  nennt sich nun "Classic Edition".
+
+v1.17m 2015-02
+- Verbesserung von CheckDiode(). Gemessenes Vcc wird bei der Widerstands-
+  prüfung beachtet. Außerdem Erkennungsproblem von Widerständen um die 2k
+  bei optionalem DC-DC-Konverter (HW_ZENER) gelöst.
+- Fehlerhafte Kommentare korrigiert.
+- Integer-Datentypen aufgeräumt.
+
+v1.16m 2014-09
+- Test für Drehencoder.
+- Ein paar Kleinigkeiten in MeasureInductance() verbessert, um die Genauigkeit
+  zu erhöhen.
+- ShowAdjust() um die Anzeige der Absolutwerte von Vcc und der internen
+  Spannungsreferenz ergänzt (Vorschlag von Vlastimil Valouch).
+- Mehrere kleine Verbesserungen.
+
+v1.15m 2014-09
+- Erweiterung von TestKey() um die Erkennung der dynamischen Drehgeschwindig-
+  keit des optionalen Drehencoders.
+- Rechteck-Signalgenerator mit variabler Frequenz implementiert.
+- MeasureInductance() zur Rückgabe der Zeit in ns geändert und die Berechnung
+  in MeasureInductor() angepaßt (Dank an Vlastimil Valouch).
+
+v1.14m 2014-08
+- Benutzerschnittstelle für Drehencoder angepaßt.
+- Compiler-Warnung bzgl. R_Pin2 in ShowDiode() beseitigt (Dank an
+  Milan Petko).
+- Widerstände zwischen 1,5k und 3k-Ohm wurden als Doppeldioden erkannt.
+  Toleranzen der Widerstanderkennung in CheckDiode() angepaßt (Danke an
+  nessatse).
+- ShortCircuit() so modifiert, daß man das Erzeugen eines gewollten 
+  Kurzschlusses bei Problemen abbrechen kann.
+- Frequenzzähler eingebaut (Hardware-Option).
+
+v1.13m 2014-07
+- Tschechische Texte (Dank an Kapa).
+- Direkte ESR-Messung und PWM-Generator geben benutzte Testpins aus.
+- Handhabung von Precompiler-Anweisungen für Optionen optimiert.
+- Unterstützung von Drehencodern für die Bedienung (Hardware-Option).
+
+v1.12m 2014-03
+- Umlautproblem bei deutschen Texten gelöst (Dank an Andreas Hoebel).
+- ESR-Messung für Kondensatoren >0,18µF.
+- LCD-Modul-Ausgabe optimiert, um ein paar Bytes Flash einzusparen. 
+
+v1.11m 2014-03
+- Pin-Erkennung von Triacs verbessert (G und MT1). Die Ausgabe zeigt
+  MT1 und MT2.
+- Dedizierte Ausgabefunktion für Pinbelegung von Halbleitern. Ausgabe auf
+  das Format "123=" zur besseren Lesbarkeit umgestellt.
+- Mehrere Ausgabefunktionen optimiert.
+- Test von Bipolartransistoren verbessert, um Transistoren mit Schutzdiode
+  auf dem gleichen Substrat zu erkennen (erzeugt einen parasitären zweiten
+  Transistor). Die Transistorausgabe kennzeichnet diesen Spezialfall mit
+  einem "+" hinter der Typenangabe.
+- Diodenausgabe um Anzeige von möglichem Bipolartransistor mit Schutzdiode
+  und Basis-Emitter-Widerstand erweitert. Dieser wird als Doppeldiode
+  erkannt. Die Ausgabe des Basis-Emitter-Widerstands signalisiert diesen
+  Spezialfall.
+- Ausgabe von Bipolartransistoren um Anzeige von Basis-Emitter-Widerstand
+  ergänzt. Wenn ein Basis-Emitter-Widerstand gefunden wurde, wird die Ausgabe
+  von hFE und V_BE übersprungen, da beide Werte nicht stimmen können,
+- Erkennung der integrierten Diode von Verarmungs-FETs im Diodentest verbessert.
+- Erkennungsproblem von Drain und Source bei Verarmungs-FETs beseitigt.
+- Erkennung von symmetrischem Drain und Source bei Verarmungs-FETs.
+- Vth ist nun negativ für P-Kanal FETs.  
+- Messung von V_GT für Thyristoren und Triacs.
+- Wegen wachsender Firmwaregröße gibt es den PWM-Generator nur noch für den
+  ATmega328.
+
+v1.10m 2013-10
+- Unterstützung für externe 2,5V Spannungsreferenz einegbaut (Hardware-Option).
+- Unterstützung für Schutz-Relais (Kondensatorentladung) eingebaut (
+  Hardware-Option).
+- Auf-Wiedersehen-Text beim Ausschalten zu Willkommen-Text beim Einschalten
+  geändert, um die Erkennung einer zu niedrigen Versorgungsspannung zu
+  erleichtern und den Spannungseinbruch durch einen DC-DC-Konverter beim
+  Einschalten abzumildern.
+- Test von Zenerdioden implementiert (Hardware-Option).
+- Das Hauptmenü hat eine Beenden-Option, um das Menü bei Aufruf aus Versehen
+  zu verlassen.
+- Unterstützung von 16MHz MCU-Takt.
+
+v1.09m 2013-07
+- Erkennung von IGBTs eingebaut.
+- Zusätzliche Überprüfung von MOSFETs eingebaut.
+- Die hFE-Messung für Bipolartransistoren berücksichtigt den Leckstrom bei der
+  Messung in Emitterschaltung.
+- Bei MOSFETs wird die Richtung der integrierten Diode angezeigt.
+- Problem mit verdrehten Drain und Source-Pins bei Anreicherungs-MOSFETs gelöst.
+- Lösung für Probleme mancher IDEs mit dem Makefile. Wichtige Werte bzw.
+  Einstellungen können auch in config.h gesetzt werden.
+
+v1.08m 2013-07
+- Da SmallResistor() bei bestimmten Induktivitäten keinen korrekten Gleich-
+  stromwiderstandswert liefern kann, wurde CheckResistor() um eine Erkennung
+  der Problemfälle ergänzt, um die Meßwerte der Standardmessung beizubehalten.
+- Induktivitätsmessung eingebaut (nur für ATmega328/P)
+- Kleinere Verbesserungen bei der Anzeige von Dioden und Bipolartransistoren.
+- Leckstrommessung eingebaut.
+- Problem bei Germanium-Transistoren mit hohem Leckstrom gelöst. Wurden als
+  P-Kanal JFET erkannt.
+- Ein paar Funktionen umbenannt und Kommentare ergänzt bzw. umformuliert.
+
+v1.07m 2013-06
+- Diodenausgabe optimiert und Anzeige von Vf für niedrige Ströme eingebaut.
+- Diodenerkennung verbessert. Kondensatoren und Widerstände werden
+  deutlich besser ausgeschlossen. Die Kondensatorerkennung wird bei
+  erkannter Diode übersprungen, um den Suchvorgang zu verkürzen. 
+- Array-Überlauffehler in CheckResistor() beseitigt.
+- Anzeigelogik für Cursor verbessert, um das Vorhandensein weiterer Infos
+  bzw. die erneute Bauteilsuche anzuzeigen.
+- Bedienung vom PWM-Generator verbessert, um das Beenden aus Versehen zu
+  vermeiden (braucht nun zwei kurze Tastendrücke).
+- Generische Menüfunktion eingabeut und alle Menüs darauf umgestellt (
+  geändertes Layout!).
+- TestKey() produziert nun einen schönen, blinkenden Cursor.
+
+v1.06m 2013-03
+- Mehrere kleine Verbessserungen und etwas aufgeräumt.
+- TestKey() so erweitert, daß der Benutzer über die erwartete Eingabe
+  informiert werden kann.
+- TestKey()-Funktion bzgl. kurzer Tastendrücke verbessert.
+- PWM-Generator zur Erzeugung von pulsweitenmodulierten Signalen mit
+  unterschiedlichen Frequenzen und frei wählbarem Tastverhältnis eingebaut.
+- Implementation einer Schlaffunktion, um den Stromverbrauch des Testers zu
+  reduzieren. Der durchschnittliche Stromverbrauch wird damit auf etwas die
+  Hälfte verringert (Hintergrundbeleuchtung ausgenommen).
+- Endladefunktion verbessert. Wenn das Entladen fehl schlägt, werden die
+  betroffenden Pins und die Restspannung ausgegeben. Das sollte helfen,
+  einen zu niedrigen Wert für CAP_DISCHARGED zu entdecken.
+- Möglichkeit zum Setzen von Fehlertypen eingebaut.
+
+v1.05m 2012-11
+- LargeCap_table[] und SmallCap_table[] vom EEPROM in das Flash verschoben,
+  um den EEPROM-Bedarf zu reduzieren. Die Firmware mit deutschen Texten
+  brauchte mehr als die 512 Bytes vom ATmega168.
+
+v1.04m 2012-11
+- Einfache Logik in die Dioden-Ausgabe einbaut, damit bei anti-parallelen
+  Dioden die Kapazitätsmessung entfällt.
+
+v1.03m 2012-11
+- Erkennungsproblem von Leistungsdioden gelöst. Dioden mit hohem Leckstrom
+  wurden als Widerstand erkannt.
+- Compiler-Warnungen bzgl. nicht initialisierter Variablen beseitigt.
+  Vergrößert die Firmware um 44 Bytes :-(
+
+v1.02m 2012-11
+- Obere Grenze für den Widerstand der Messleitungen von 1,00 Ohm im
+  Selbstabgleich eingebaut.
+- Die Funktionen für den Selbsttest und -Abgleich führen einen Kurzschlußtest
+  durch und geben Rückmeldung.
+- Das Hauptmenü gibt Rückmeldung über Erfolg/Fehler der ausgewählten Aktion.
+
+v1.01m 2012-10
+- Prüfsumme für gespeicherte Abgleichwerte plus Überprüfung.
+- Messfunktion für kleine Widerstände (Auflösung: 0,01 Ohm).
+- Selbstabgleich um Nulloffset für den Widerstand der Messkabel erweitert.
+- CheckResistor() führt zusätzliche Messung für kleine Widerstände (<10 Ohm)
+  durch.
+- Funktion zum Vergleich von skalierten Werten eingefügt. 
+- Mehrere Funktionen an die variable Skalierung von Werten angepaßt.
+
+v1.00m 2012-09
+- Einfaches Menü zur Auswahl von Selbsttest, Selbstabgleich, Speichern der
+  Abgleichwerte im EEPROM und Anzeige der Abgleichswerte.
+- hFE von 16 auf 32 Bit geändert (keine 65k-Begrenzung mehr).
+
+v0.99m 2012-09
+- Erste veröffentlichte Version basierend auf Karl-Heinz' 0.99k.
+
+
+------------------------------------ EOF -------------------------------------

@@ -1,0 +1,124 @@
+/* ************************************************************************
+ *
+ *   language specific global variables: Russian (Windows-1251)
+ *
+ *   (c) 2017-2018 by Markus Reschke
+ *   translation by hapless@EEVblog
+ *   based on code from Markus Frejek and Karl-Heinz Kьbbeler
+ *
+ * ************************************************************************ */
+
+
+/*
+ *  Russian
+ */
+
+#if defined (UI_RUSSIAN)
+
+  /*
+   *  constant strings (stored in EEPROM)
+   */
+
+  const unsigned char Probing_str[] EEMEM = "Тестирование...";
+  const unsigned char Timeout_str[] EEMEM = "Время истекло";
+  const unsigned char Failed1_str[] EEMEM = "Компонент не";
+  const unsigned char Failed2_str[] EEMEM = "найден!";
+  const unsigned char Done_str[] EEMEM = "Выполнено!";
+  const unsigned char Select_str[] EEMEM = "Выберите";
+  const unsigned char Selftest_str[] EEMEM = "Самопроверка";
+  const unsigned char Adjustment_str[] EEMEM = "Корректировка";
+  const unsigned char Save_str[] EEMEM = "Сохранить";
+  const unsigned char Load_str[] EEMEM = "Загрузить";
+  const unsigned char Show_str[] EEMEM = "Данные";
+  const unsigned char Remove_str[] EEMEM = "Разомкните";
+  const unsigned char Create_str[] EEMEM = "Замкните";
+  const unsigned char ShortCircuit_str[] EEMEM = "все 3 контакта!";
+  const unsigned char DischargeFailed_str[] EEMEM = "Батарея?";
+  const unsigned char Error_str[] EEMEM = "Ошибка!";
+  const unsigned char Exit_str[] EEMEM = "Выход";
+  const unsigned char Checksum_str[] EEMEM = "Контр. сумма";
+  const unsigned char BJT_str[] EEMEM = "Транз. (бипол.)";
+  const unsigned char Thyristor_str[] EEMEM = "Тиристор";
+  const unsigned char Triac_str[] EEMEM = "Симистор";
+  const unsigned char PUT_str[] EEMEM = "Транз. (ПОПТ)";
+  const unsigned char Bye_str[] EEMEM = "До свидания!";
+
+  #ifndef BAT_NONE
+    const unsigned char Weak_str[] EEMEM = "слабая";
+    const unsigned char Low_str[] EEMEM = "разр.";
+  #endif
+
+  #ifdef SW_SQUAREWAVE
+    const unsigned char SquareWave_str[] EEMEM = "Генератор";
+  #endif
+
+  #ifdef HW_ZENER
+    const unsigned char Zener_str[] EEMEM = "Напряжение";
+    const unsigned char Min_str[] EEMEM = "мин.";
+  #endif
+
+  #ifdef HW_FREQ_COUNTER
+    const unsigned char FreqCounter_str[] EEMEM = "Частотомер";
+  #endif
+
+  #ifdef HW_FREQ_COUNTER_EXT
+    const unsigned char CounterChannel_str[] EEMEM = "Ch";
+    const unsigned char FreqInput_str[] EEMEM = "BNC";
+    const unsigned char LF_Crystal_str[] EEMEM = "LF crystal";
+    const unsigned char HF_Crystal_str[] EEMEM = "HF crystal";
+  #endif
+
+  #ifdef SW_ENCODER
+    const unsigned char Encoder_str[] EEMEM = "Валкодер";
+    const unsigned char TurnRight_str[] EEMEM = "Направо!";
+  #endif
+
+  #ifdef SW_CONTRAST
+    const unsigned char Contrast_str[] EEMEM = "Контраст";
+  #endif
+
+  #if defined (SW_IR_RECEIVER) || defined (HW_IR_RECEIVER)
+    const unsigned char IR_Detector_str[] EEMEM = "ИК-приёмник";
+  #endif
+
+  #ifdef SW_IR_TRANSMITTER
+    const unsigned char IR_Transmitter_str[] EEMEM = "IR RC";
+    const unsigned char IR_Send_str[] EEMEM = "sending...";
+  #endif
+
+  #ifdef SW_OPTO_COUPLER
+    const unsigned char OptoCoupler_str[] EEMEM = "Oптрон";
+    const unsigned char None_str[] EEMEM = "не найден";
+  #endif
+
+  #if defined (SW_OPTO_COUPLER) || defined (SW_DS18B20)
+    const unsigned char Start_str[] EEMEM = "Начать проверку";
+  #endif
+
+  #ifdef SW_UJT
+    const unsigned char UJT_str[] EEMEM = "Транз. (ОПТ)";
+  #endif
+
+  #ifdef SW_SERVO
+    const unsigned char Servo_str[] EEMEM = "Сервопривод";
+    const unsigned char Sweep_str[] EEMEM = "<->";
+  #endif
+
+  #ifdef SW_CAP_LEAKAGE
+    const unsigned char CapLeak_str[] EEMEM = "Cap Leakage";
+    const unsigned char CapCharge_str[] EEMEM = "Charging";
+    const unsigned char CapHigh_str[] EEMEM = "Rl";
+    const unsigned char CapLow_str[] EEMEM = "Rh";
+    const unsigned char CapDischarge_str[] EEMEM = "Discharging";
+  #endif
+
+  #ifdef HW_TOUCH
+    const unsigned char TouchSetup_str[] EEMEM = "Touch Setup";
+  #endif
+
+#endif
+
+
+/* ************************************************************************
+ *   EOF
+ * ************************************************************************ */
