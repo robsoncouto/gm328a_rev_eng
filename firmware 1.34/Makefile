@@ -2,7 +2,7 @@
 #  Makefile
 #
 #  (c) 2012-2018 by Markus Reschke
-#  based on code from Markus Frejek and Karl-Heinz Kübbeler
+#  based on code from Markus Frejek and Karl-Heinz Kï¿½bbeler
 #
 
 PROJECT = ComponentTester
@@ -59,8 +59,8 @@ PARTNO = m328p
 
 # avrdude: ISP programmer
 #PROGRAMMER = buspirate
-#PROGRAMMER = USBasp
-PROGRAMMER = avrispmkII
+PROGRAMMER = USBasp
+#PROGRAMMER = avrispmkII
 
 # avrdude: port of ISP programmer
 #PORT = /dev/bus_pirate
