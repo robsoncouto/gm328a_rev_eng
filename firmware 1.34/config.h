@@ -57,7 +57,7 @@
  *  - adjust value to match your rotary encoder
  */
 
-#define ENCODER_STEPS    20
+#define ENCODER_STEPS    30
 
 
 /*
@@ -112,7 +112,7 @@
  *  - uncomment to enable
  */
 
-#define HW_ZENER
+//#define HW_ZENER
 
 
 /*
@@ -134,7 +134,7 @@
  *  - uncomment to enable
  */
 
-//#define HW_FREQ_COUNTER_BASIC
+#define HW_FREQ_COUNTER_BASIC
 
 
 /*
@@ -237,7 +237,7 @@
  *  - uncomment to enable
  */
 
-#define SW_SQUAREWAVE
+//#define SW_SQUAREWAVE
 
 
 /*
@@ -285,7 +285,7 @@
  *  - uncomment to enable
  */
 
-#define SW_OPTO_COUPLER
+//#define SW_OPTO_COUPLER
 
 
 /*
@@ -330,7 +330,7 @@
  *  - uncomment to enable
  */
 
-//#define SW_CAP_LEAKAGE
+#define SW_CAP_LEAKAGE
 
 
 
@@ -438,7 +438,7 @@
  *  - Time between printing the result and starting a new probing cycle.
  */
 
-#define CYCLE_DELAY      3000
+#define CYCLE_DELAY      10000
 
 
 /*
