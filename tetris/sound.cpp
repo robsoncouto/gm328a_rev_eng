@@ -1,6 +1,5 @@
 /*
   Tetris theme - (Korobeiniki)
-  Connect a piezo buzzer or speaker to pin 11 or select a new pin.
   More songs available at https://github.com/robsoncouto/arduino-songs
 
                                               Robson Couto, 2019
@@ -41,7 +40,6 @@ int melody[] = {
   NOTE_E5, -4,  NOTE_C5, 8,  NOTE_E5, 4,  NOTE_D5, 8,  NOTE_C5, 8,
   NOTE_B4, 4,  NOTE_B4, 8,  NOTE_C5, 8,  NOTE_D5, 4,  NOTE_E5, 4,
   NOTE_C5, 4,  NOTE_A4, 4,  NOTE_A4, 4, PAUSE, 4,
-
 
   NOTE_E5, 2,  NOTE_C5, 2,
   NOTE_D5, 2,   NOTE_B4, 2,

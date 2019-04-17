@@ -22,8 +22,7 @@
 #define BLOCK_SIZE 6
 
 #define SCORE_X0 90
-#define SCORE_Y0 2//38
-
+#define SCORE_Y0 2
 
 
 int getEncoderPos(void);
@@ -37,7 +36,7 @@ class Tetromino {
   unsigned int color;
   public:
     // No constructor, I can't kill the objects anyways,
-    // and there is only one tretromino active so I may just reset it
+    // and there is only one tretromino active so I may just as well reset it
     void update(void); 
     void move(int side);
     char canMove(int side);
@@ -45,10 +44,9 @@ class Tetromino {
     void reset();
 };
 
-void game_init(void);
-void draw_buffer(void);
+void gameInit(void);
+void drawBuffer(void);
 void waitInterrupt(void);
-void printinfo(int data);
 unsigned char buttonWasPressed(void);
 
 void checkBuffer(void);

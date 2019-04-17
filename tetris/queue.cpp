@@ -1,16 +1,18 @@
 #include "queue.h"
 #define Q_MAX 20
 
+// Source https://www.tutorialspoint.com/data_structures_algorithms/queue_program_in_c.htm
+
 int Array[Q_MAX];
 int front = 0;
 int rear = -1;
 int itemCount = 0;
 
-int queue_peek(void) {
+int queuePeek(void) {
    return Array[front];
 }
 
-unsigned char queue_isEmpty(void) {
+unsigned char queueIsEmpty(void) {
    if(itemCount == 0){
     return 1;
    }else{
@@ -18,7 +20,7 @@ unsigned char queue_isEmpty(void) {
    }
 }
 
-unsigned char queue_isFull(void) {
+unsigned char queueIsFull(void) {
    if(itemCount == Q_MAX){
     return 1;
    }else{
@@ -26,13 +28,12 @@ unsigned char queue_isFull(void) {
    }
 }
 
-int queue_size(void) {
+int queueSize(void) {
    return itemCount;
 }  
 
-void queue_insert(int data) {
-
-   if(!queue_isFull()) {
+void queueInsert(int data) {
+   if(!queueIsFull()) {
   
       if(rear == Q_MAX-1) {
          rear = -1;            
@@ -43,7 +44,7 @@ void queue_insert(int data) {
    }
 }
 
-int queue_removeData() {
+int queueRemoveData() {
    int data = Array[front++];
   
    if(front == Q_MAX) {
