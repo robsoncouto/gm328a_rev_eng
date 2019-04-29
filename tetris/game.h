@@ -31,8 +31,8 @@ void disableEncoder(void);
 
 
 class Tetromino {
-  unsigned char active,type,frame_counter;
-  int block[4];
+  unsigned char active,type,frame_counter,dropped;
+  unsigned char block[4];
   unsigned int color;
   public:
     // No constructor, I can't kill the objects anyways,
@@ -45,6 +45,7 @@ class Tetromino {
 };
 
 void gameInit(void);
+void gameTick(void);
 void drawBuffer(void);
 void waitInterrupt(void);
 unsigned char buttonWasPressed(void);
@@ -52,7 +53,7 @@ unsigned char buttonWasPressed(void);
 void checkBuffer(void);
 void drawWholeBuffer(void);
 
-void updateScore(int);
+void updateScore(int, int);
 void updateSpeed(void);
 
 void showNewGameScreen(void);

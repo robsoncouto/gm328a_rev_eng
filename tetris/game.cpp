@@ -23,8 +23,10 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RS
 unsigned int buffer[200];
 char gameover = 0;
 volatile char intFlag = 0;
-int lines = 0, level = 0, score = 0, speed = 48, nextPiece = 0;
+unsigned int lines = 0, level = 0, score = 0, speed = 48, nextPiece = 0;
 int startLevel = 0;
+Tetromino tet;
+int side = 0;
 
 RotaryEncoder encoder(1, 3);
 
@@ -48,9 +50,11 @@ void initTimer1() {
 
 void waitInterrupt(void) {
   intFlag = 1;
+  enableEncoder();
   while (intFlag) {
     encoder.tick();
   }
+  disableEncoder();
 }
 
 ISR(TIMER1_OVF_vect) { // Timer 1 interrupt service routine
@@ -65,8 +69,6 @@ void enableEncoder(void) {
   //set encoder pins as input, low logical state
   pinMode(1, INPUT);
   pinMode(3, INPUT);
-  digitalWrite(1, LOW);
-  digitalWrite(3, LOW);
 }
 
 void disableEncoder(void) {
@@ -116,24 +118,33 @@ unsigned char buttonWasPressed(void) {
 void gameInit(void) {
   //pin 7 - wake up button
   pinMode(7, INPUT);
+  digitalWrite(7, HIGH);
 
   // pin 6 - holds the power on
   pinMode(6, OUTPUT);
   digitalWrite(6, HIGH);
 
 
-  //disconnect the resistors connected to pin A0
+  //disconnect the GPIOs from resistors connected to terminal pins
   //See the available schematic
-  //analog pin 0 used as the seed of random()
+  pinMode(8, INPUT);
   pinMode(9, INPUT);
   pinMode(10, INPUT);
+  pinMode(11, INPUT);
+  pinMode(12, INPUT);
+  pinMode(13, INPUT);
+  
+  //analog pin 0 used as the seed of random()
   randomSeed(analogRead(0));
 
-  // terminal pins, used for the optional button
+  //terminal pins, used for the optional button
   pinMode(A0, OUTPUT);
   digitalWrite(A0, LOW);
   pinMode(A2, INPUT);
   digitalWrite(A2, HIGH);
+
+  //sound pin
+  pinMode(A1, OUTPUT);
 
   //init and rotate the lcd
   tft.initR(INITR_BLACKTAB);      // Init ST7735S chip, black tab
@@ -148,6 +159,9 @@ void gameInit(void) {
   // inits timer one and set interrupt at 60Hz
   initTimer1();
 
+  //enables sound
+  soundPlay();
+
   //show new game screen with select level menu
   showNewGameScreen();
 
@@ -158,30 +172,30 @@ void gameInit(void) {
 
 
   // game rectangle, where the tetrominos will be
-  tft.drawRect(X0 - 1, Y0 - 1 , 62, 122, ST77XX_WHITE);
+  tft.drawRect(X0 - 1, Y0 - 1 , 62, 122, C_WHITE);
 
   //text size and color
-  tft.setTextColor(ST77XX_WHITE);
+  tft.setTextColor(C_WHITE);
   tft.setTextSize(1);
 
   // box for the score
-  tft.drawRect(SCORE_X0, SCORE_Y0 + 2 , 65, 25, ST77XX_WHITE);
+  tft.drawRect(SCORE_X0, SCORE_Y0 + 2 , 65, 25, C_WHITE);
   tft.drawLine(SCORE_X0 + 8, SCORE_Y0 + 2 , SCORE_X0 + 40, SCORE_Y0 + 2, C_BLACK);
   tft.setCursor(SCORE_X0 + 10, SCORE_Y0);
   tft.println("SCORE");
   // box for the current level
-  tft.drawRect(SCORE_X0, SCORE_Y0 + 32 , 65, 25, ST77XX_WHITE);
+  tft.drawRect(SCORE_X0, SCORE_Y0 + 32 , 65, 25, C_WHITE);
   tft.drawLine(SCORE_X0 + 8, SCORE_Y0 + 32 , SCORE_X0 + 40, SCORE_Y0 + 32, C_BLACK);
   tft.setCursor(SCORE_X0 + 10, SCORE_Y0 + 30);
   tft.println("LEVEL");
   // box for number of lines
-  tft.drawRect(SCORE_X0, SCORE_Y0 + 62 , 65, 25, ST77XX_WHITE);
+  tft.drawRect(SCORE_X0, SCORE_Y0 + 62 , 65, 25, C_WHITE);
   tft.drawLine(SCORE_X0 + 8, SCORE_Y0 + 62 , SCORE_X0 + 40, SCORE_Y0 + 62, C_BLACK);
   tft.setCursor(SCORE_X0 + 10, SCORE_Y0 + 60);
   tft.println("LINES");
 
-  // prints the score, level and line labels
-  tft.setTextSize(2);
+  // prints the score, level and line values
+  tft.setTextSize(1);
   tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 10);
   tft.println(score);
   tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 40);
@@ -192,55 +206,20 @@ void gameInit(void) {
   // calculates the next piece
   nextPiece = random(7);
 
-  // show it on the right side of the screen
-  drawNewPiece();
+  tet.reset();
 
 }
 
-// This manipulates the tetromino object, see game.h
-void Tetromino::reset() {
-  checkBuffer();
-  // The piece was already calculated and the palyer knows it
-  switch (nextPiece) { // shape of the tetromino
-    case 0: // I
-      block[0] = 3; block[1] = 4; block[2] = 5; block[3] = 6;
-      color = C_RED;
-      break;
-    case 1: // J
-      block[0] = 4; block[1] = 5; block[2] = 6; block[3] = 16;
-      color = C_YELLOW;
-      break;
-    case 2: // L
-      block[0] = 3; block[1] = 4; block[2] = 5; block[3] = 13;
-      color = C_MAGENTA;
-      break;
-    case 3: // O
-      block[0] = 14; block[1] = 15; block[2] = 4; block[3] = 5;
-      color = C_CYAN;
-      break;
-    case 4: // S
-      block[0] = 13; block[1] = 14; block[2] = 4; block[3] = 5;
-      color = C_ORANGE;
-      break;
-    case 5:  // T
-      block[0] = 14; block[1] = 4; block[2] = 3; block[3] = 5;
-      color = C_BLUE;
-      break;
-    case 6:  // Z
-      block[0] = 15; block[1] = 14; block[2] = 3; block[3] = 4;
-      color = C_GREEN;
-      break;
-  }
-
-  // sets the characteristics of the tetronimo (used on some functions)
-  type = nextPiece;
-  active = 1;
-  frame_counter = speed;
-
-  nextPiece = random(7);
-  drawNewPiece();
-
+void gameTick(void) {
+  side = getEncoderPos();
+  if (side == S_LEFT)  tet.move(S_LEFT);
+  if (side == S_RIGHT) tet.move(S_RIGHT);
+  if (buttonWasPressed()) tet.rotate();
+  tet.update();
+  soundTick();  
 }
+
+
 
 // checks if a location on the 10x20 field is being used already
 boolean bufferIsNotFreeAt(int location) {
@@ -262,7 +241,6 @@ boolean bufferIsNotFreeAt(int location) {
 void drawWholeBuffer(void) {
   for (int i = 0; i < 200; i++) {
     tft.drawRect(X0 + (i % 10)*BLOCK_SIZE, Y0 + (i / 10)*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, buffer[i]);
-    //the sound engine must be ticked once in a while, HACK
     soundTick();
   }
 }
@@ -273,12 +251,14 @@ void showGameOverScreen(void) {
 
   //Effect for filling every block from the bottom up
   for (int i = 199; i >= 0; i--) {
-    tft.drawRect(X0 + (i % 10)*BLOCK_SIZE, Y0 + (i / 10)*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, ST77XX_WHITE);
+    tft.drawRect(X0 + (i % 10)*BLOCK_SIZE, Y0 + (i / 10)*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, C_WHITE);
   }
+
+  soundPause();
 
   //Fills the whole screen with black and shows the game over text
   tft.fillScreen(C_BLACK);
-  tft.setCursor(25, 60);
+  tft.setCursor(25, 40);
   tft.setTextColor(ST77XX_RED);
   tft.setTextSize(2);
   tft.println("GAME OVER");
@@ -304,7 +284,7 @@ void showNewGameScreen(void) {
 
   tft.setTextSize(1);
   tft.setCursor(25, 115);
-  tft.setTextColor(ST77XX_WHITE);
+  tft.setTextColor(C_WHITE);
   tft.println("Robson Couto, 2019");
 
   tft.setTextSize(1);
@@ -358,14 +338,15 @@ void showNewGameScreen(void) {
     while (digitalRead(7) == LOW) {
       i++;
       //avoids issues where the game would start accidentally even without a key press
-      if (i > 50)return;
+      if (i > 50) {
+        return;
+      }
+
     }
 
     // cchecks for encoder input
-    enableEncoder();
     waitInterrupt();
     side = getEncoderPos();
-    disableEncoder();
 
     //updates level bsaed on encoder input
     if (side == S_RIGHT) {
@@ -389,6 +370,7 @@ void showNewGameScreen(void) {
       tft.println(startLevel);
     }
   }
+
 }
 
 // draws the next tetromino that will come
@@ -455,57 +437,76 @@ void drawBuffer(void) {
 }
 
 //updates the score based on completed lines
-void updateScore(int compLines) {
-  static int lineCounter = 0; //this counts up to 10 lines, for level increase
+void updateScore(int compLines, int dropped) {
+  static unsigned int lineCounter = 0; //this counts up to 10 lines, for level increase
+  unsigned int tempLevel = level;
 
   //erases the old score from the screen
   tft.setTextColor(C_BLACK);
-  tft.setTextSize(2);
+  tft.setTextSize(1);
   tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 10);
   tft.println(score);
-  tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 40);
-  tft.println(level);
-  tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 70);
-  tft.println(lines);
+  
+  if (compLines > 0) {
+    //erase older number of lines
+    tft.setTextColor(C_BLACK);
+    tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 70);
+    tft.println(lines);
 
-  lines += compLines; // this is the variable that the player can see on the screen
-  lineCounter += compLines; // this is used internally for updating the level
+    lines += compLines; // this is the variable that the player can see on the screen
+    lineCounter += compLines; // this is used internally for updating the level
 
-  // details at https://tetris.wiki/Tetris_(NES,_Nintendo)
-  if (level != startLevel) {
-    if (lineCounter >= 10) {
-      level++;
-      lineCounter = lineCounter % 10;
+    // details at https://tetris.wiki/Tetris_(NES,_Nintendo)
+    if (tempLevel != startLevel) {
+      if (lineCounter >= 10) {
+        tempLevel++;
+        lineCounter = lineCounter % 10;
+      }
+    } else {
+      if ((lines >= (startLevel * 10 + 10)) || (lines >= max(100, (startLevel * 10 - 50))))
+        tempLevel++;
     }
-  } else {
-    if ((lines >= (startLevel * 10 + 10)) || (lines >= max(100, (startLevel * 10 - 50))))
-      level++;
+    
+    tft.setTextColor(C_WHITE);
+    tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 70);
+    tft.println(lines);
+
+    if (tempLevel != level) {
+      tft.setTextColor(C_BLACK);
+      tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 40);
+      tft.println(level);
+      level=tempLevel;
+      tft.setTextColor(C_WHITE);
+      tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 40);
+      tft.println(level);
+    }
+    // The more lines at once, better the score increase
+    switch (compLines) {
+      case 1:
+        score += 40 * (level + 1);
+        break;
+      case 2:
+        score += 100 * (level + 1);
+        break;
+      case 3:
+        score += 300 * (level + 1);
+        break;
+      case 4:
+        score += 1200 * (level + 1);
+        break;
+    }
+    tft.setTextColor(C_WHITE);
+    tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 70);
+    tft.println(lines);
+
   }
 
-  // The more lines at once, better the score increase
-  switch (compLines) {
-    case 1:
-      score += 40 * (level + 1);
-      break;
-    case 2:
-      score += 100 * (level + 1);
-      break;
-    case 3:
-      score += 300 * (level + 1);
-      break;
-    case 4:
-      score += 1200 * (level + 1);
-      break;
-  }
-
+  score += dropped;
   //draws the new score on the screen
-  tft.setTextColor(ST77XX_WHITE);
+  tft.setTextColor(C_WHITE);
   tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 10);
   tft.println(score);
-  tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 40);
-  tft.println(level);
-  tft.setCursor(SCORE_X0 + 4, SCORE_Y0 + 70);
-  tft.println(lines);
+
 }
 
 // See https://tetris.wiki/Tetris_(NES,_Nintendo)
@@ -554,13 +555,58 @@ void checkBuffer(void) {
   }
   //if a line was completed, update state and screen
   if (completeLines > 0) {
-    updateScore(completeLines);
+    updateScore(completeLines, 0);
     updateSpeed();
     drawWholeBuffer();
   }
 }
 
 /**************************** Tetromino Functions ****************************/
+
+// This manipulates the tetromino object, see game.h
+void Tetromino::reset() {
+  checkBuffer();
+  // The piece was already calculated and the palyer knows it
+  switch (nextPiece) { // shape of the tetromino
+    case 0: // I
+      block[0] = 3; block[1] = 4; block[2] = 5; block[3] = 6;
+      color = C_RED;
+      break;
+    case 1: // J
+      block[0] = 4; block[1] = 5; block[2] = 6; block[3] = 16;
+      color = C_YELLOW;
+      break;
+    case 2: // L
+      block[0] = 3; block[1] = 4; block[2] = 5; block[3] = 13;
+      color = C_MAGENTA;
+      break;
+    case 3: // O
+      block[0] = 14; block[1] = 15; block[2] = 4; block[3] = 5;
+      color = C_CYAN;
+      break;
+    case 4: // S
+      block[0] = 13; block[1] = 14; block[2] = 4; block[3] = 5;
+      color = C_ORANGE;
+      break;
+    case 5:  // T
+      block[0] = 14; block[1] = 4; block[2] = 3; block[3] = 5;
+      color = C_BLUE;
+      break;
+    case 6:  // Z
+      block[0] = 15; block[1] = 14; block[2] = 3; block[3] = 4;
+      color = C_GREEN;
+      break;
+  }
+
+  // sets the characteristics of the tetronimo (used on some functions)
+  type = nextPiece;
+  active = 1;
+  frame_counter = speed;
+  updateScore(0, dropped);
+  dropped = 0;
+  nextPiece = random(7);
+  drawNewPiece();
+}
 
 //function for evaluating if the tetromino can move
 //where can be left (-1) right (1) or down (10)
@@ -633,7 +679,7 @@ void Tetromino::update(void) {
         queueInsert(block[3]);
 
       } else {
-        //if the tetromino can not move dow anymore, disbale it
+        //if the tetromino can not move down anymore, disbale it
         active = 0;
 
         //if it can not move and it is at the very top of the screen, it is game over
@@ -648,7 +694,8 @@ void Tetromino::update(void) {
       if (digitalRead(A2) == HIGH) {
         frame_counter = speed;
       } else {
-        frame_counter = speed / 10;
+        frame_counter = 1;
+        dropped++;
       }
     }
   } else {
@@ -719,15 +766,26 @@ void Tetromino::rotate() {
 
   // checks for pieces at the edges,
   // if they were to be rotated, their blocks wold fly no one knows where.
-  if ((block[1] + 1) % 10 == 0) { //if the center of the piece is at the left edge, move first
+  if ((block[1]) % 10 == 9) { //if the center of the piece is at the left edge, move first
     move(S_LEFT);
-    if ((type == 0) && ((block[1] + 2) % 10 == 0))
+    if ((type == 0) && ((block[1]) % 10 == 8)) { // The I tetronimo is really prblematic
       move(S_LEFT);
+    }
   }
   if ((block[1] % 10) == 0) { //if the center of the piece is at the right edge, move first
     move(S_RIGHT);
-    if ((type == 0) && ((block[1] - 1) % 10 == 0))
+    if ((type == 0) && ((block[1]) % 10 == 1))
       move(S_RIGHT);
+  }
+  if (type == 0) {
+    if (((block[1] % 10) == 1)) { // if the I tetromino is almost in the edge
+      if (block[2] == block[1] + 10) //and it is vertically oriented, move it to the side in order to rotate it correctly, otherwise the last block would not have space to turn
+        move(S_RIGHT);
+    }
+    if (((block[1]) % 10 == 8)) {
+      if (block[2] == block[1] - 10)
+        move(S_LEFT);
+    }
   }
 
   int oldBlock[4];
@@ -742,6 +800,9 @@ void Tetromino::rotate() {
     if ((block[0] > 199) || (block[1] > 199) || (block[2] > 199) || (block[3] > 199)) {
       active = 0;
       return;
+    }
+    if ((block[0] < 10) || (block[1] < 10) || (block[2] < 10) || (block[3] < 10)) {
+      return;// does not rotate pieces at the top of the screen
     }
 
     //removes tetromino from buffer
@@ -788,6 +849,10 @@ void Tetromino::rotate() {
     if ((block[0] > 199) || (block[1] > 199) || (block[2] > 199) || (block[3] > 199)) {
       conflict += 1;
     }
+    if ((block[0] < 0) || (block[1] < 0) || (block[2] < 0) || (block[3] < 0)) {
+      conflict += 1;
+    }
+
 
     //return averything to the original postion
     if (conflict > 0) {
